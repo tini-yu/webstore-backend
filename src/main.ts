@@ -2,13 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
+  app.useGlobalPipes(new ValidationPipe()); //adds validation
+
   const config = new DocumentBuilder()
-    .setTitle('School X - OpenAPI 3.0')
+    .setTitle('School X Student Struggle')
     .setDescription(
       `[The source API definition (json)](http://${process.env.SERVER}:${process.env.PORT}/api-json)`,
     )

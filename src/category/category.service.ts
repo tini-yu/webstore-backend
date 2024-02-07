@@ -17,18 +17,20 @@ export class CategoryService {
   }
 
   findAll() {
-    return `This action returns all category`;
+    Promise<CategoryEntity[]>;
+    return this.repository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  findOne(id: number): Promise<CategoryEntity | null> {
+    return this.repository.findOneBy({ id }); //Не учитывает кол-во id всего
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+    return this.repository.update(id, updateCategoryDto);
+    //return `This action updates a #${id} category`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: string): Promise<void> {
+    await this.repository.delete(id);
   }
 }
