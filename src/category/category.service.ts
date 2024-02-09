@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,16 +21,24 @@ export class CategoryService {
     return this.repository.find();
   }
 
-  findOne(id: number): Promise<CategoryEntity | null> {
+  async findOne(id: number): Promise<CategoryEntity | null> {
     return this.repository.findOneBy({ id }); //Не учитывает кол-во id всего
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return this.repository.update(id, updateCategoryDto);
-    //return `This action updates a #${id} category`;
+  async update(id: number, dto: UpdateCategoryDto) {
+    const toUpdate = await this.repository.findOneBy({ id });
+    if (!toUpdate) {
+      //doesn't exist
+      throw new BadRequestException(`Запись с id=${id} не найдена`);
+    }
+    if (dto.name) {
+      //column exist
+      toUpdate.name = dto.name;
+    }
+    return this.repository.save(toUpdate);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.repository.delete(id);
+  async remove(id: string) {
+    return this.repository.delete(id);
   }
 }
