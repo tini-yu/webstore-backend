@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity('product')
-export class ProductsEntity {
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -29,7 +29,7 @@ export class ProductsEntity {
   crossedPrice?: number | null;
 
   @ApiHideProperty()
-  @ManyToOne(() => CategoryEntity, (category) => category.products, {
+  @ManyToOne(() => CategoryEntity, (category) => category.product, {
     eager: true,
   })
   @JoinColumn()

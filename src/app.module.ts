@@ -5,7 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategoryModule } from './category/category.module';
 import { getPostgresConfig } from './configs/postgres.config';
 import { PromoModule } from './promo/promo.module';
-import { ProductsModule } from './products/products.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { ProductsModule } from './products/products.module';
     }),
     CategoryModule,
     PromoModule,
-    ProductsModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [],

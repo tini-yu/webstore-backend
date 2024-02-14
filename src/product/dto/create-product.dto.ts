@@ -2,7 +2,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsOptional, IsNumberString } from 'class-validator';
 
-export class CreateProductsDto {
+export class CreateProductDto {
   @ApiProperty({
     type: 'file',
     properties: {

@@ -5,6 +5,6 @@ const fileName = (req, file, callback) => {
 };
 
 export const fileStorage = diskStorage({
-  destination: './db_images/products', //если не создана, то создаст
+  destination: './db_images/product', //если не создана, то создаст
   filename: fileName, //имя файла от клиента взять и записать также на сервер
 });

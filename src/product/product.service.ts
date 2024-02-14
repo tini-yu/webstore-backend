@@ -3,21 +3,21 @@ import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as fs from 'fs';
 
-import { CreateProductsDto } from './dto/create-products.dto';
-import { UpdateProductsDto } from './dto/update-products.dto';
-import { ProductsEntity } from './entities/products.entity';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductEntity } from './entities/product.entity';
 
 @Injectable()
-export class ProductsService {
+export class ProductService {
   constructor(
-    @InjectRepository(ProductsEntity)
-    private repository: Repository<ProductsEntity>,
+    @InjectRepository(ProductEntity)
+    private repository: Repository<ProductEntity>,
   ) {}
 
   async create(
-    dto: CreateProductsDto,
+    dto: CreateProductDto,
     image: Express.Multer.File,
-  ): Promise<ProductsEntity> {
+  ): Promise<ProductEntity> {
     return this.repository.save({
       image: image.filename,
       name: dto.name,
@@ -27,15 +27,15 @@ export class ProductsService {
     });
   }
 
-  async findAll(): Promise<ProductsEntity[]> {
+  async findAll(): Promise<ProductEntity[]> {
     return this.repository.find();
   }
 
-  async findOne(id: number): Promise<ProductsEntity> {
+  async findOne(id: number): Promise<ProductEntity> {
     return this.repository.findOneBy({ id });
   }
 
-  async update(id: number, dto: UpdateProductsDto, image: Express.Multer.File) {
+  async update(id: number, dto: UpdateProductDto, image: Express.Multer.File) {
     const toUpdate = await this.repository.findOneBy({ id });
     if (!toUpdate) {
       throw new BadRequestException(`Записи с id=${id} не найдено`);
@@ -48,7 +48,7 @@ export class ProductsService {
     }
     if (image) {
       if (toUpdate.image !== image.filename) {
-        fs.unlink(`db_images/products/${toUpdate.image}`, (err) => {
+        fs.unlink(`db_images/product/${toUpdate.image}`, (err) => {
           if (err) {
             console.error(err);
           }
