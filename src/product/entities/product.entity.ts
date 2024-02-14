@@ -1,4 +1,5 @@
 import { ApiHideProperty } from '@nestjs/swagger';
+import { BrandEntity } from 'src/brand/entities/brand.entity';
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import {
   Column,
@@ -34,4 +35,11 @@ export class ProductEntity {
   })
   @JoinColumn()
   category: CategoryEntity;
+
+  @ApiHideProperty()
+  @ManyToOne(() => BrandEntity, (brand) => brand.product, {
+    eager: true,
+  })
+  @JoinColumn()
+  brand: BrandEntity;
 }

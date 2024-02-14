@@ -24,11 +24,15 @@ export class CreateProductDto {
   price: number;
 
   @ApiPropertyOptional({
-    description: 'Old price',
+    description: 'Цена до скидки',
   })
   @IsOptional()
   crossedPrice: number | null;
 
   @IsNumberString()
   categoryId: number;
+
+  @ApiPropertyOptional()
+  @IsNumberString()
+  brandId: number;
 }
