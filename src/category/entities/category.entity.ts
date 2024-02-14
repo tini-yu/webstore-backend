@@ -1,7 +1,10 @@
+import { ApiHideProperty } from '@nestjs/swagger';
+import { ProductsEntity } from 'src/products/entities/products.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -15,4 +18,8 @@ export class CategoryEntity {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
+
+  @ApiHideProperty()
+  @OneToMany(() => ProductsEntity, (products) => products.category)
+  products: ProductsEntity[];
 }
