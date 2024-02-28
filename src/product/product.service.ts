@@ -24,7 +24,7 @@ export class ProductService {
 
   async create(
     dto: CreateProductDto,
-    image: Express.Multer.File,
+    image: Express.Multer.File, // adds image to folder even if request doesnt come through
   ): Promise<ProductEntity> {
     const product = new ProductEntity();
 

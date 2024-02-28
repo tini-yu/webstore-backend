@@ -7,6 +7,8 @@ import { getPostgresConfig } from './configs/postgres.config';
 import { PromoModule } from './promo/promo.module';
 import { ProductModule } from './product/product.module';
 import { BrandModule } from './brand/brand.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -22,8 +24,11 @@ import { BrandModule } from './brand/brand.module';
     PromoModule,
     ProductModule,
     BrandModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
+  exports: [UserModule],
 })
 export class AppModule {}
