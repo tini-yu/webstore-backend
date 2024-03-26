@@ -11,7 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe()); //adds validation
 
   const config = new DocumentBuilder()
-    .setTitle('School X Student Struggle')
+    .setTitle('Web-page for Tech-Store')
     .setDescription(
       `[The source API definition (json)](http://${process.env.SERVER}:${process.env.PORT}/api-json)`,
     )

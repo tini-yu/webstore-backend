@@ -77,6 +77,14 @@ export class ProductService {
       .getMany();
   }
 
+  async findByBrandId(brandId: number): Promise<ProductEntity[]> {
+    return this.productRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.brand', 'brand')
+      .where('product.brandId = :brandId', { brandId })
+      .getMany();
+  }
+
   async update(
     id: number,
     dto: UpdateProductDto,

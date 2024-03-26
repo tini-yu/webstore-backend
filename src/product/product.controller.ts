@@ -9,8 +9,14 @@ import {
   UseInterceptors,
   UploadedFile,
   Response,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiConsumes,
+  ApiOperation,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { ProductService } from './product.service';
@@ -19,6 +25,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { DeleteResult } from 'typeorm';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @ApiTags('product')
 @Controller('product')
@@ -26,6 +33,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Добавить продукт' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
@@ -36,10 +45,22 @@ export class ProductController {
     return this.productService.create(dto, image);
   }
 
-  @Get()
+  @Get('all')
   @ApiOperation({ summary: 'Показать все продукты' })
   findAll() {
     return this.productService.findAll();
+  }
+
+  @Get('category:id')
+  @ApiOperation({ summary: 'Показать все продукты по категории' })
+  findByCategoryId(@Param('id') id: string) {
+    return this.productService.findByCategoryId(+id);
+  }
+
+  @Get('brand:id')
+  @ApiOperation({ summary: 'Показать все продукты по бренду' })
+  findBybrandId(@Param('id') id: string) {
+    return this.productService.findByBrandId(+id);
   }
 
   @Get('/image/:path') //endpoint Передаем файл в виде ссылки
@@ -55,6 +76,8 @@ export class ProductController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Изменить продукт' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
@@ -67,6 +90,8 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Удалить продукт' })
   remove(@Param('id') id: string): Promise<DeleteResult> {
     return this.productService.delete(+id);
