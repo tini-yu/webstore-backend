@@ -10,7 +10,7 @@ import {
   UploadedFile,
   Response,
 } from '@nestjs/common';
-import { ApiTags, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { PromoService } from './promo.service';
@@ -26,6 +26,7 @@ export class PromoController {
   constructor(private readonly promoService: PromoService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Создать рекламу' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
   create(
@@ -36,21 +37,25 @@ export class PromoController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Показать всю рекламу' })
   findAll() {
     return this.promoService.findAll();
   }
 
   @Get('/image/:path') //endpoint Передаем файл в виде ссылки
+  @ApiOperation({ summary: 'Показать картинку по её названию' })
   download(@Param('path') path: string, @Response() response) {
     return response.sendFile(path, { root: './db_images/promo' });
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Показать 1 рекламу' })
   findOne(@Param('id') id: string): Promise<PromoEntity> {
     return this.promoService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Изменить рекламу' })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image', { storage: fileStorage }))
   update(
@@ -62,6 +67,7 @@ export class PromoController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Удалить рекламу' })
   remove(@Param('id') id: string): Promise<DeleteResult> {
     return this.promoService.delete(+id);
   }

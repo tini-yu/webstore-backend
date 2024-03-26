@@ -1,4 +1,5 @@
 .env
+run.txt
 
 # compiled output
 /dist

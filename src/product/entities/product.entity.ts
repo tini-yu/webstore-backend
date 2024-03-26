@@ -1,11 +1,13 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { BrandEntity } from 'src/brand/entities/brand.entity';
+import { CartEntity } from 'src/cart/entities/cart.entity';
 import { CategoryEntity } from 'src/category/entities/category.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -42,4 +44,9 @@ export class ProductEntity {
   })
   @JoinColumn()
   brand: BrandEntity;
+
+  @ApiHideProperty()
+  @OneToMany(() => CartEntity, (cart) => cart.id)
+  @JoinColumn()
+  cart: CartEntity[];
 }

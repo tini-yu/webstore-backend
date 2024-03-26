@@ -1,7 +1,11 @@
+import { ApiHideProperty } from '@nestjs/swagger';
+import { CartEntity } from 'src/cart/entities/cart.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -22,4 +26,9 @@ export class UserEntity {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  @ApiHideProperty()
+  @OneToMany(() => CartEntity, (cart) => cart.id)
+  @JoinColumn()
+  cart: CartEntity[];
 }
