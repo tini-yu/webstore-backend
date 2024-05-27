@@ -97,7 +97,7 @@ export class CartService {
 
     if (cart.length > 0) {
       const product = cart[0].product;
-      const quantity = (cart[0].quantity -= 1);
+      const quantity = cart[0].quantity - 1;
       const total = product.price * quantity;
 
       if (quantity == 0) {
